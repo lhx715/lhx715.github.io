@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>java语法</title>
+      <link href="/2023/09/24/java%E8%AF%AD%E6%B3%95/"/>
+      <url>/2023/09/24/java%E8%AF%AD%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="java语法"><a href="#java语法" class="headerlink" title="java语法"></a>java语法</h1><p>java语言特点：</p><ul><li><p>平台无关性：JVM</p></li><li><p>面向对象：</p><p>继承，封装，多态</p></li><li><p>支持多线程:</p><p>java的多线程是通过继承Thread类实现的，c++的多线程是通过引入std：：thread实现的</p></li><li><p>解释和编译共存</p></li></ul><h2 id="JVM-JDK-JRE的区别"><a href="#JVM-JDK-JRE的区别" class="headerlink" title="JVM,JDK,JRE的区别"></a>JVM,JDK,JRE的区别</h2><p>JVM：java虚拟机，java程序运行在java虚拟机上，因此可对不同的平台实现java程序，所以java语言能够实现跨平台</p><p>JDK: java development Kit&#x3D;jRE +JVM+开发工具</p><p>jre&#x3D;jvm+核心类库</p><p>跨平台的实现原理：java源代码被编译成字节码，字节码可以被翻译成机器能够识别的机器码。</p><p>所以我们要理解为什么字节码能够被虚拟机所识别:</p><p>以下是一段java代码</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>然后java代码被编译为Javac.c代码</p><p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202309241348919.png" alt="image-20230924134850731"></p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>:  ldc           #<span class="number">2</span>                  <span class="comment">// String Hello, World!</span></span><br><span class="line"><span class="number">2</span>:  astore_1</span><br><span class="line"><span class="number">3</span>:  getstatic     #<span class="number">3</span>                  <span class="comment">// Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line"><span class="number">6</span>:  aload_1</span><br><span class="line"><span class="number">7</span>:  invokevirtual #<span class="number">4</span>                  <span class="comment">// Method java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line"><span class="number">10</span>: <span class="keyword">return</span></span><br><span class="line">    </span><br></pre></td></tr></table></figure><p>字节码我觉得可以理解为汇编代码，就是中间代码。汇编代码也可以在不同的平台上执行。不同的平台安装对应的虚拟机，jvm将字节码翻译为二进制机器码，就可以实现java语言的平台无关性了</p><h2 id="java语言的编译与解释共存"><a href="#java语言的编译与解释共存" class="headerlink" title="java语言的编译与解释共存"></a>java语言的编译与解释共存</h2><p>编译型编程语言：源代码一次性翻译为可执行的机器代码</p><p>解释型编程语言：一行一行的解释成计价器代码</p><p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202309241400586.png" alt="image-20230924140033530"></p><p>java数据类型</p><p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202309241407585.png" alt="image-20230924140711529"></p><p>为什么在有的时候使用基本数据类型的时候一定要用它的包装类，而不使用他自己。</p><p>1.因为包装类提供一些方法，比如转化成String类型，Byte类型等，这些方法只有他的包装类型才有，它本书没有，这些方法可以很好的帮助我们去做转化</p><p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202309241419123.png" alt="image-20230924141900084"></p><p>2.java的一些繁星参数列表只有包装类型。比如list，set，map等</p><p>3.方法参数和返回值：如果一个方法需要进行一些特殊的处理或判断，或者需要返回一个整数，但是又需要保留null值的可能性，就可以使用Integer作为参数和返回值类型。</p><p>java可以自动对这些数据类型进拆箱和装箱</p><h2 id="自动转化类型，强制转化类型"><a href="#自动转化类型，强制转化类型" class="headerlink" title="自动转化类型，强制转化类型"></a>自动转化类型，强制转化类型</h2><p>自动转化，从小到大</p><p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202309241421151.png" alt="image-20230924142138116"></p><p>强制转化就是反过来</p><h2 id="amp-和-amp-amp-的区别"><a href="#amp-和-amp-amp-的区别" class="headerlink" title="&amp; 和&amp;&amp;的区别"></a>&amp; 和&amp;&amp;的区别</h2><p>&amp;和&amp;&amp;都要求两边是同时为真，但是</p><p>&amp;&amp;：短路与：左边为false时，就不会判断右边了</p><p>&amp;：逻辑与，左边为false时，还要继续判断右边</p><h2 id="break，continue，return的区别"><a href="#break，continue，return的区别" class="headerlink" title="break，continue，return的区别"></a>break，continue，return的区别</h2><p>break：跳出整个循环</p><p>continue： 跳出本次循环，继续执行下一次循环</p><p>return： 程序返回，不再执行下面的代码</p><p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202309241426441.png" alt="image-20230924142602402"></p><h2 id="java在处理自增增运算的时候和自我赋值操作时"><a href="#java在处理自增增运算的时候和自我赋值操作时" class="headerlink" title="java在处理自增增运算的时候和自我赋值操作时"></a>java在处理自增增运算的时候和自我赋值操作时</h2><p>是先付给一个临时变量，再自增增，自增增之后，再赋值回去，所以它的值不会发生变化</p><p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202309241427030.png" alt="image-20230924142737997"></p><h2 id="面向对象和面向过程的区别"><a href="#面向对象和面向过程的区别" class="headerlink" title="面向对象和面向过程的区别"></a>面向对象和面向过程的区别</h2><p>面向对象：把问题纷纷凝结成哥哥对象 —&gt;编年体</p><p>面向过程：把问题分解成步骤—&gt;纪传体</p><h2 id="面向对象三大特征"><a href="#面向对象三大特征" class="headerlink" title="面向对象三大特征"></a>面向对象三大特征</h2><ul><li>继承：使用已存在的类，定义新类过程，可以继承原类，继承原类的方法和属性</li><li>封装：指将数据和操作数据的方法封装在一个类中，对外部隐藏具体的实现细节，只暴露必要的接口供其他类使用。封装的目的是为了提高软件的可维护性、可扩展性和安全性</li><li>多态：一个统一的接口来处理不同类型的对象，使得不同的对象可以以一致的方式进行操作和使用。多态性能够增加代码的灵活性、可扩展性和可维护性。比如说向上转型，overwrite，继承关系等</li></ul><script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SQL--DQL</title>
       <link href="/2023/09/23/SQL-DQL/"/>
       <url>/2023/09/23/SQL-DQL/</url>
