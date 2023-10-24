@@ -1,0 +1,329 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>sql窗口函数 | 虾虾的博客</title><meta name="author" content="lhx"><meta name="copyright" content="lhx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="sql 窗口函数窗口函数的分类   函数名 作用    ROW_NUMBER（） 顺序排序   1，2，3   RANK( ) 并列排序 ，跳过重复的序列号   1，1，3   DENSE_RANK() 并列排序，不会跳过重复的序列号，1，1，2   PERCENT_RANK() 等级百分比   CUME_DIST() 累计分布值   LAG(expr,n) 返回当前行的前n行的exper的值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql窗口函数">
+<meta property="og:url" content="http://lhx715.github.io/2023/10/23/sql%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="虾虾的博客">
+<meta property="og:description" content="sql 窗口函数窗口函数的分类   函数名 作用    ROW_NUMBER（） 顺序排序   1，2，3   RANK( ) 并列排序 ，跳过重复的序列号   1，1，3   DENSE_RANK() 并列排序，不会跳过重复的序列号，1，1，2   PERCENT_RANK() 等级百分比   CUME_DIST() 累计分布值   LAG(expr,n) 返回当前行的前n行的exper的值">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/sql_dql.png">
+<meta property="article:published_time" content="2023-10-23T13:16:05.000Z">
+<meta property="article:modified_time" content="2023-10-24T10:30:08.892Z">
+<meta property="article:author" content="lhx">
+<meta property="article:tag" content="sql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/sql_dql.png"><link rel="shortcut icon" href="/img/mainpage.png"><link rel="canonical" href="http://lhx715.github.io/2023/10/23/sql%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'sql窗口函数',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-24 18:30:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/cat.css"><div id="myscoll"></div><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/avater.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="虾虾的博客"><span class="site-name">虾虾的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">sql窗口函数</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-23T13:16:05.000Z" title="发表于 2023-10-23 21:16:05">2023-10-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-24T10:30:08.892Z" title="更新于 2023-10-24 18:30:08">2023-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="sql窗口函数"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="sql-窗口函数"><a href="#sql-窗口函数" class="headerlink" title="sql 窗口函数"></a>sql 窗口函数</h1><h2 id="窗口函数的分类"><a href="#窗口函数的分类" class="headerlink" title="窗口函数的分类"></a>窗口函数的分类</h2><table>
+<thead>
+<tr>
+<th align="center">函数名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ROW_NUMBER（）</td>
+<td>顺序排序   1，2，3</td>
+</tr>
+<tr>
+<td align="center">RANK( )</td>
+<td>并列排序 ，跳过重复的序列号   1，1，3</td>
+</tr>
+<tr>
+<td align="center">DENSE_RANK()</td>
+<td>并列排序，不会跳过重复的序列号，1，1，2</td>
+</tr>
+<tr>
+<td align="center">PERCENT_RANK()</td>
+<td>等级百分比</td>
+</tr>
+<tr>
+<td align="center">CUME_DIST()</td>
+<td>累计分布值</td>
+</tr>
+<tr>
+<td align="center">LAG(expr,n)</td>
+<td>返回当前行的前n行的exper的值</td>
+</tr>
+<tr>
+<td align="center">LEAD(exper,n)</td>
+<td>返回当前行的后n行的expr的值</td>
+</tr>
+<tr>
+<td align="center">FIRST_VALUE(expr)</td>
+<td>返回第一个expr的值</td>
+</tr>
+<tr>
+<td align="center">LAST_VALUE(expr)</td>
+<td>返回最后一个expr的值</td>
+</tr>
+<tr>
+<td align="center">NTH_VALUE(expr,n)</td>
+<td>返回第n个expr的值</td>
+</tr>
+<tr>
+<td align="center">NTILE(n)</td>
+<td>将分区中的有序数据分为n个桶，记录桶编号</td>
+</tr>
+</tbody></table>
+<h2 id="语法结构"><a href="#语法结构" class="headerlink" title="语法结构"></a>语法结构</h2><p><code>函数  over （PARTITION BY 字段名（窗口按照什么进行分组，分组后，在各个组中分别执行）ORDER BY 按照什么字段进行排序，使得窗口函数按照排序后的顺序进行编号）</code></p>
+<h3 id="ROW-NUMBER"><a href="#ROW-NUMBER" class="headerlink" title="ROW_NUMBER()"></a>ROW_NUMBER()</h3><p>例子：</p>
+<p>按照category 进行分类，并按照price进行排序，顺序排序，相同的价格编号不同</p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232147411.png" alt="image-20231023214725276"></p>
+<h3 id="RANK"><a href="#RANK" class="headerlink" title="RANK()"></a>RANK()</h3><p>例子： </p>
+<p>按照category 进行分类，并按照price进行排序，并列排序，相同的价格编号相同，然后跳过编号相同的，后面的编号不是连续的</p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232149194.png" alt="image-20231023214958124"></p>
+<h3 id="DENSE-RANK"><a href="#DENSE-RANK" class="headerlink" title="DENSE_RANK()"></a>DENSE_RANK()</h3><h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>例子： </p>
+<p>按照category 进行分类，并按照price进行排序，并列排序，相同的价格编号相同，然后跳过编号相同的，后面的编号是连续的</p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232154139.png" alt="image-20231023215438077"></p>
+<h3 id="percent-rank-–-等级百分比"><a href="#percent-rank-–-等级百分比" class="headerlink" title="percent_rank() – 等级百分比"></a>percent_rank() – 等级百分比</h3><p>计算分区或结果集中行的百分位数的排名</p>
+<p><code> percent_rank=(rank-1)/(rows-1)</code></p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232203245.png" alt="image-20231023220304173"></p>
+<h3 id="cume-dist-–累计分布值，小于等于-当前rank值得行数-x2F-分组内得总行数"><a href="#cume-dist-–累计分布值，小于等于-当前rank值得行数-x2F-分组内得总行数" class="headerlink" title="cume_dist –累计分布值，小于等于 当前rank值得行数&#x2F;分组内得总行数"></a>cume_dist –累计分布值，小于等于 当前rank值得行数&#x2F;分组内得总行数</h3><p>例子：</p>
+<p>计算分布区域内小于等于该rank值的数的总行数占窗口内总行数的值</p>
+<p><code>cume_dist= &lt;=rank的行数/总行数</code></p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232206200.png" alt="image-20231023220656134"></p>
+<h3 id="lag"><a href="#lag" class="headerlink" title="lag"></a>lag</h3><p>lag（expr，n）-返回当前行的前n行（本组内）的expr的值</p>
+<p>例子： 按照category进行分组，返回分组当中当前行的前第几行n行</p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232212563.png" alt="image-20231023221211498"></p>
+<h3 id="lead（expr，n）"><a href="#lead（expr，n）" class="headerlink" title="lead（expr，n）"></a>lead（expr，n）</h3><p>LEAD(expr,n) 返回后当前行的后n行（本组）的expr值</p>
+<p>例子，返回当前行后一行的值</p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232217260.png" alt="image-20231023221736203"></p>
+<h3 id="first-value（）-取分组内排序后，截至到当前行，第一个值"><a href="#first-value（）-取分组内排序后，截至到当前行，第一个值" class="headerlink" title="first_value（） 取分组内排序后，截至到当前行，第一个值"></a>first_value（） 取分组内排序后，截至到当前行，第一个值</h3><p>返回当前分组的第一行</p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232219209.png" alt="image-20231023221958145"></p>
+<p>Last_value()  取分组内排序后 截至到当前行的最后一个值</p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310232221638.png" alt="image-20231023222148573"></p>
+<h3 id="NTH-VALUE-expr-n-返回第n个expr的值"><a href="#NTH-VALUE-expr-n-返回第n个expr的值" class="headerlink" title="NTH_VALUE(expr,n) 返回第n个expr的值"></a>NTH_VALUE(expr,n) 返回第n个expr的值</h3><p>返回窗口中的第n个值</p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310241818891.png" alt="image-20231024181808829"></p>
+<h3 id="NTILE的用法"><a href="#NTILE的用法" class="headerlink" title="NTILE的用法"></a>NTILE的用法</h3><p>将一个组分为多少个桶。</p>
+<p><code>NTILE(N) OVER (PARTITION BY column1, column2,... ORDER BY expression [ASC|DESC])</code></p>
+<p><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/202310241822171.png" alt="image-20231024182231104"></p>
+<h2 id="窗口函数语法"><a href="#窗口函数语法" class="headerlink" title="窗口函数语法"></a>窗口函数语法</h2><p><code>&lt;窗口函数&gt; over (partition by &lt;用于分组的列名&gt;                  order by &lt;用于排序的列名&gt;                  frame_clause &lt;窗口大小&gt;)</code></p>
+<h3 id="指定窗口大小"><a href="#指定窗口大小" class="headerlink" title="指定窗口大小"></a>指定窗口大小</h3><p><code>当ORDER BY后面缺少窗口从句条件，窗口大小默认是 RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW. （分组中的第一行，当前行的所有对等行）</code></p>
+<ul>
+<li><strong>current row</strong>：对于 rows 方式，代表了当前行；对于 range ，代表了当前行的所有对等行。</li>
+<li><strong>unbounded preceding</strong>：代表了分组中的第一行。</li>
+<li><strong>unbounded following</strong>：代表了分组中的最后一行。</li>
+<li><strong>n preceding</strong>：对于 rows 方式，代表了当前行之前的第 n 行；对于 range ，代表了等于当前行的值减去 n 的所有行；如果当前行的值为 NULL，代表了当前行的所有对等行。</li>
+<li><strong>n following</strong>：对于 rows 方式，代表了当前行之后的第 n 行；对于 range ，代表了等于当前行的值加上 n 的所有行；如果当前行的值为 NULL，代表了当前行的所有对等行。</li>
+</ul>
+<p>此外：聚合函数也可以当作窗口函数进行使用</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://lhx715.github.io">lhx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lhx715.github.io/2023/10/23/sql%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0/">http://lhx715.github.io/2023/10/23/sql%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lhx715.github.io" target="_blank">虾虾的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/sql/">sql</a></div><div class="post_share"><div class="social-share" data-image="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/sql_dql.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/10/04/%E7%AE%97%E6%B3%95/" title="算法"><img class="cover" src="/img/%E7%8C%AB%E7%88%AA.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">算法</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/09/23/SQL-DDL/" title="SQL--DDL"><img class="cover" src="https://img-1321156231.cos.ap-nanjing.myqcloud.com/sql_ddl.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-23</div><div class="title">SQL--DDL</div></div></a></div><div><a href="/2023/09/23/SQL-DQL/" title="SQL--DQL"><img class="cover" src="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/sql_dql.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-23</div><div class="title">SQL--DQL</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/avater.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lhx</div><div class="author-info__description">本菜鸟的学习历程</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql-%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">sql 窗口函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">窗口函数的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">语法结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ROW-NUMBER"><span class="toc-number">1.2.1.</span> <span class="toc-text">ROW_NUMBER()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RANK"><span class="toc-number">1.2.2.</span> <span class="toc-text">RANK()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DENSE-RANK"><span class="toc-number">1.2.3.</span> <span class="toc-text">DENSE_RANK()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.2.4.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#percent-rank-%E2%80%93-%E7%AD%89%E7%BA%A7%E7%99%BE%E5%88%86%E6%AF%94"><span class="toc-number">1.2.5.</span> <span class="toc-text">percent_rank() – 等级百分比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cume-dist-%E2%80%93%E7%B4%AF%E8%AE%A1%E5%88%86%E5%B8%83%E5%80%BC%EF%BC%8C%E5%B0%8F%E4%BA%8E%E7%AD%89%E4%BA%8E-%E5%BD%93%E5%89%8Drank%E5%80%BC%E5%BE%97%E8%A1%8C%E6%95%B0-x2F-%E5%88%86%E7%BB%84%E5%86%85%E5%BE%97%E6%80%BB%E8%A1%8C%E6%95%B0"><span class="toc-number">1.2.6.</span> <span class="toc-text">cume_dist –累计分布值，小于等于 当前rank值得行数&#x2F;分组内得总行数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lag"><span class="toc-number">1.2.7.</span> <span class="toc-text">lag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lead%EF%BC%88expr%EF%BC%8Cn%EF%BC%89"><span class="toc-number">1.2.8.</span> <span class="toc-text">lead（expr，n）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#first-value%EF%BC%88%EF%BC%89-%E5%8F%96%E5%88%86%E7%BB%84%E5%86%85%E6%8E%92%E5%BA%8F%E5%90%8E%EF%BC%8C%E6%88%AA%E8%87%B3%E5%88%B0%E5%BD%93%E5%89%8D%E8%A1%8C%EF%BC%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%80%BC"><span class="toc-number">1.2.9.</span> <span class="toc-text">first_value（） 取分组内排序后，截至到当前行，第一个值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NTH-VALUE-expr-n-%E8%BF%94%E5%9B%9E%E7%AC%ACn%E4%B8%AAexpr%E7%9A%84%E5%80%BC"><span class="toc-number">1.2.10.</span> <span class="toc-text">NTH_VALUE(expr,n) 返回第n个expr的值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NTILE%E7%9A%84%E7%94%A8%E6%B3%95"><span class="toc-number">1.2.11.</span> <span class="toc-text">NTILE的用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0%E8%AF%AD%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">窗口函数语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E7%AA%97%E5%8F%A3%E5%A4%A7%E5%B0%8F"><span class="toc-number">1.3.1.</span> <span class="toc-text">指定窗口大小</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/23/sql%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0/" title="sql窗口函数"><img src="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/sql_dql.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="sql窗口函数"/></a><div class="content"><a class="title" href="/2023/10/23/sql%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0/" title="sql窗口函数">sql窗口函数</a><time datetime="2023-10-23T13:16:05.000Z" title="发表于 2023-10-23 21:16:05">2023-10-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/04/%E7%AE%97%E6%B3%95/" title="算法"><img src="/img/%E7%8C%AB%E7%88%AA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算法"/></a><div class="content"><a class="title" href="/2023/10/04/%E7%AE%97%E6%B3%95/" title="算法">算法</a><time datetime="2023-10-04T13:24:58.000Z" title="发表于 2023-10-04 21:24:58">2023-10-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="数据结构"><img src="/img/%E7%8C%AB%E7%88%AA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构"/></a><div class="content"><a class="title" href="/2023/10/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="数据结构">数据结构</a><time datetime="2023-10-01T08:44:03.000Z" title="发表于 2023-10-01 16:44:03">2023-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/vue-1/" title="vue-1"><img src="/img/%E7%8C%AB%E7%88%AA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vue-1"/></a><div class="content"><a class="title" href="/2023/09/25/vue-1/" title="vue-1">vue-1</a><time datetime="2023-09-25T14:04:33.000Z" title="发表于 2023-09-25 22:04:33">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AD%A5%E9%AA%A4/" title="前后端分离项目步骤"><img src="https://content-1321156231.cos.ap-nanjing.myqcloud.com/xmcover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前后端分离项目步骤"/></a><div class="content"><a class="title" href="/2023/09/25/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AD%A5%E9%AA%A4/" title="前后端分离项目步骤">前后端分离项目步骤</a><time datetime="2023-09-25T13:20:44.000Z" title="发表于 2023-09-25 21:20:44">2023-09-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By lhx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer data-pjax src="/js/cat.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
