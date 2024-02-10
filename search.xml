@@ -8,7 +8,7 @@
       <link href="/2024/02/10/java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
       <url>/2024/02/10/java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
       
-        <content type="html"><![CDATA[<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+        <content type="html"><![CDATA[<p>&#x3D;&#x3D;设计模式的重要性：&#x3D;&#x3D;</p><p>问题：</p><ol><li>解决项目的可维护性</li><li>可读性</li><li>规范性</li><li>代码重用性</li><li>使程序呈现高内聚，低耦合</li></ol><h2 id="设计模式七大原则"><a href="#设计模式七大原则" class="headerlink" title="设计模式七大原则"></a>设计模式七大原则</h2><ol><li><p>&#x3D;&#x3D;单一职责原则&#x3D;&#x3D;： 一个类只负责一项职责</p><p>作用： 降低类的复杂度，一个类只负责一项职责</p><p>​提高类的可读性，可维护性</p><p>​降低变更引起的风险</p><p>​通常情况下： 我们应当遵守单一职责原则，只有逻辑足够简单，才可以在代码级违反单一职责原则：只有类中方法组都少，才可以在方法级别保持单一职责原则</p></li><li><p>接口隔离原则</p><p>一个类对另外一个类的依赖，应该建立在最小接口上</p></li></ol><script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
       
       
       <categories>
