@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>node.js阅读笔记 | 虾虾的博客</title><meta name="author" content="lhx"><meta name="copyright" content="lhx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深入浅出node.js .attention {color:red;}  注意：阅读本书之前，需要了解一些基础的概念，比如事件驱动，非阻塞型IO  基础概念事件驱动涉及模式（EDA)事件源： 指的是发生事件的对象或者组件， 负责向事件处理器传递事件对象 事件对象： 一种数据结构， 封装事件源发生的事件，事件发生时，传递给事件处理器 监听器： 事件处理器 常见的事件驱动涉及模式：   观察者模式：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node.js阅读笔记">
+<meta property="og:url" content="http://lhx715.github.io/2024/09/11/node-js%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="虾虾的博客">
+<meta property="og:description" content="深入浅出node.js .attention {color:red;}  注意：阅读本书之前，需要了解一些基础的概念，比如事件驱动，非阻塞型IO  基础概念事件驱动涉及模式（EDA)事件源： 指的是发生事件的对象或者组件， 负责向事件处理器传递事件对象 事件对象： 一种数据结构， 封装事件源发生的事件，事件发生时，传递给事件处理器 监听器： 事件处理器 常见的事件驱动涉及模式：   观察者模式：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-1321156231.cos.ap-nanjing.myqcloud.com/sql_ddl.png">
+<meta property="article:published_time" content="2024-09-10T16:58:42.000Z">
+<meta property="article:modified_time" content="2024-09-10T16:29:30.941Z">
+<meta property="article:author" content="lhx">
+<meta property="article:tag" content="node.js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-1321156231.cos.ap-nanjing.myqcloud.com/sql_ddl.png"><link rel="shortcut icon" href="/img/mainpage.png"><link rel="canonical" href="http://lhx715.github.io/2024/09/11/node-js%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'node.js阅读笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-09-11 00:29:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/cat.css"><div id="myscoll"></div><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/avater.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div><div class="menus_item"><a class="site-page" href="/readingList/"><i class="fa-fw fas fa-book"></i><span> 阅读清单</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="虾虾的博客"><span class="site-name">虾虾的博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div><div class="menus_item"><a class="site-page" href="/readingList/"><i class="fa-fw fas fa-book"></i><span> 阅读清单</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">node.js阅读笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-09-10T16:58:42.000Z" title="发表于 2024-09-11 00:58:42">2024-09-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-09-10T16:29:30.941Z" title="更新于 2024-09-11 00:29:30">2024-09-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="node.js阅读笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="深入浅出node-js"><a href="#深入浅出node-js" class="headerlink" title="深入浅出node.js"></a>深入浅出node.js</h1><style> .attention {color:red;}</style>
+
+<p class="attention">注意：阅读本书之前，需要了解一些基础的概念，比如事件驱动，非阻塞型IO</p>
+
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="事件驱动涉及模式（EDA"><a href="#事件驱动涉及模式（EDA" class="headerlink" title="事件驱动涉及模式（EDA)"></a>事件驱动涉及模式（EDA)</h3><p>事件源： 指的是发生事件的对象或者组件， 负责向事件处理器传递事件对象</p>
+<p>事件对象： 一种数据结构， 封装事件源发生的事件，事件发生时，传递给事件处理器</p>
+<p>监听器： 事件处理器</p>
+<p>常见的事件驱动涉及模式： </p>
+<ul>
+<li>观察者模式： 观察者模式是一种经典的事件驱动模式。 观察者会维护一组观察对象， 主题发生变化时，会通知所有观察者对象进行更新。</li>
+<li>发布-订阅模式： 发布-订阅模式是一种广泛应用的事件驱动涉及模式， 在这个模式中，发布者对象将事件发布到一个主题或者多个主题。订阅者对象可以选择订阅感兴趣的主题并接收事件通知</li>
+<li>命令模式： 请求封装成对象， 使得请求发送者和接收者都能理解</li>
+<li>代理模式： 为其他对象提供一种代理可以控制堆这个对象的访问，在事件驱动架构中，代理模式可以用于代理事件发布者</li>
+<li>责任链模式 ： 责任链模式是一种行为架构模式， 在事件驱动架构中，责任链模式可以用于将事件请求传递给一系列处理对象，直到找到可以处理事件的对象为止。</li>
+<li>状态模式： 以将对象的状态封装成不同的类，并将状态的逻辑委托给转态类。 当事件发生时， 对象可以根据当前状态进行响应的处理</li>
+<li>访问者模式访问者模式可以用于处理事件时访问事件对象的各个属性和方法。</li>
+<li>中介者模式： 中介者模式可以用于将事件发送给中介者对象，由中介者对象决定哪些对象需要接收事件。</li>
+</ul>
+<h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h3><p>见参考资料</p>
+<h2 id="node的作用"><a href="#node的作用" class="headerlink" title="node的作用"></a>node的作用</h2><ul>
+<li><p>打破了js只能在浏览器中运行的局面。 前后端变成环境统一。降低了前后端转换需要的上下文交换代价。 </p>
+<p>影响： 出现了node-webkit等项目，将node中的事件循环和webkit中的事件循环融合在一起。 既可以通过html，css带来的ui构建。也能通过它访问本地资源。将两者的优势整合在一起。 桌面应用程序的开发可以完全通过html，css，js完成</p>
+</li>
+</ul>
+<h2 id="node特点"><a href="#node特点" class="headerlink" title="node特点"></a>node特点</h2><ul>
+<li>保留了js中那些熟悉的接口。没有改写语言本身的特性。依旧基于作用域和原型链。 区别在于，将前端中广泛运用的思想迁移到了服务端。</li>
+</ul>
+<p>特点： </p>
+<ul>
+<li><p>异步IO</p>
+</li>
+<li><p>事件和回调函数</p>
+</li>
+<li><p>单线程</p>
+<p> 缺点：</p>
+<ul>
+<li>无法利用多核CPU</li>
+<li>错误会引起整个应用退出， 应用的健壮性值得考验</li>
+<li>大量计算会占用CPU，导致无法继续调用异步I&#x2F;O</li>
+</ul>
+<p>解决方式： </p>
+<ul>
+<li>child_process: 子进程， 将计算发布到各个子进程。将大量计算分解掉。 然后再通过进程之间的事件消息来传递结果。这可以很好的保持模型的简单和低依赖。通过Master-Worker的管理方式。也可以很好的管理各个工作进程。以达到更高的健壮性。</li>
+</ul>
+</li>
+<li><p>跨平台</p>
+<p>可以在不同的操纵系统上运行</p>
+</li>
+</ul>
+<h2 id="node的应用场景"><a href="#node的应用场景" class="headerlink" title="node的应用场景"></a>node的应用场景</h2><ul>
+<li>I&#x2F;O密集型。 </li>
+<li>同时也擅长CPU密集型的业务</li>
+<li>分布式应用</li>
+</ul>
+<h1 id="模块机制"><a href="#模块机制" class="headerlink" title="模块机制"></a>模块机制</h1><p>理论和实践是相互影响和促进的。 node能以一种比较成熟的姿态出现。离不开commonJs规范的影响。 在服务端commonJs能以一种寻常的姿态写进各个公司的项目代码中。</p>
+<p>浏览器： bom+dom+ECMAScript</p>
+<p>CommonJs： FS+TCP+Stream+Buffer</p>
+<h2 id="js核心模块的编译过程"><a href="#js核心模块的编译过程" class="headerlink" title="js核心模块的编译过程"></a>js核心模块的编译过程</h2><ul>
+<li><p>转存为c++数组： 使用V8附带的js2c.py工具。 将所有内置的js代码转化为c++数组，生成为node_natives.h头文件。 整个过程中js代码以字符串的形式存储在node的命名空间中，是不可直接执行的， js代码直接加载进内存之后，js核心模块经历标识符分析后直接定位到内存中</p>
+</li>
+<li><p>编译为js核心模块： </p>
+</li>
+<li><p>c++&#x2F;c核心模块的编译过程： 在核心模块中，有的模块全部由c++&#x2F;c编写， 这种模块称为内奸模块。 通常不被用户直接调用，</p>
+</li>
+<li><p>node中的buffer，cypto，evals，fs，os等模块都由c&#x2F;c++编写的</p>
+</li>
+</ul>
+<ol>
+<li><p>内建模块的组织形式</p>
+</li>
+<li><p>内建模块经过统一定义后，都通过NODE_Module宏将模块定义到node命名空间，</p>
+</li>
+<li><p>内建模块 通过node_extension.h文件将内建模块统一放进来一个node_module_list的数组当中</p>
+<ul>
+<li>node_buffer</li>
+<li>node_crypto</li>
+<li>node_evals</li>
+<li>node_fs</li>
+<li>node_http_paser</li>
+<li>node_os</li>
+<li>node_zlib</li>
+<li>node_timer_wrap</li>
+<li>node_tcp_wrap</li>
+<li>node_udp_wrap</li>
+<li>node_pipe_wrap</li>
+<li>node_cares_wrap</li>
+<li>node_tty_wrap</li>
+<li>node_process_wrap</li>
+<li>node_fs_event_wrap</li>
+<li>node_signal_watcher</li>
+</ul>
+<p>这些内建模块的取出也十分简单。 node提供了get_builtin_module() 方法从node_module_list中取出这些模块。 优势在于 这些内建模块本身由c++&#x2F;c编写， 性能上优于脚本语言。 其次在进行文件编译时， 它们被编译为二进制文件。一旦node开始执行， 他们被直接加载进内存中，无需再次做标识符定位， 编译等过程。直接就可开始执行</p>
+<p>node模块类型中， 存在一种依赖层级关系：</p>
+<p>文件系统-&gt;核心模块-&gt;内建模块</p>
+</li>
+</ol>
+<h2 class='attention'> c/c++扩展模块</h2>
+
+<p>js的典型弱点就是位运算，js的位运算是参照java的位运算实现的。 java的位运算是在int型数字基础上进行的。 而js中只有double型的数据类型。 在进行位运算的过程中，需要将double转为int类型，然后再进行。 所以，再js层面做为元素的效率并不高。 所以应用中，会频繁出现位运算的需求发， 包括转码，编码等。 这时通过c&#x2F;c++扩展模块来提升性能的机会就来了</p>
+<p>前提条件</p>
+<ul>
+<li>GYP项目生成工具</li>
+<li>V8引擎C++库</li>
+<li>libuv库</li>
+<li>Node内部库</li>
+</ul>
+<p>node再require过程实际上经历了两个步骤，第一个步骤是调用类uv_dlopen（）方法打开动态连接库，第二个步骤是调用uv_dlsym（）方法去找到动态链接库中的NODE_MODULE宏定义的方法地址。 这两个过程都是通过libuv进行封装的。  c&#x2F;c++内建模块主要扮演两类核心的职责： </p>
+<ul>
+<li>一类是作为c&#x2F;c++的封装层和桥接层</li>
+<li>纯粹的功能模块，不跟底层打交道</li>
+</ul>
+<p><span class='attention'>参考资料</span></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Bb15070047748/article/details/124699009?ops_request_misc=%257B%2522request%255Fid%2522%253A%25223E447216-FDD3-454F-B6DB-7453DF46D689%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=3E447216-FDD3-454F-B6DB-7453DF46D689&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-124699009-null-null.142%5Ev100%5Epc_search_result_base5&utm_term=IO&spm=1018.2226.3001.4187">https://blog.csdn.net/Bb15070047748/article/details/124699009?ops_request_misc=%257B%2522request%255Fid%2522%253A%25223E447216-FDD3-454F-B6DB-7453DF46D689%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=3E447216-FDD3-454F-B6DB-7453DF46D689&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-124699009-null-null.142^v100^pc_search_result_base5&amp;utm_term=IO&amp;spm=1018.2226.3001.4187</a></li>
+<li></li>
+</ul>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://lhx715.github.io">lhx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lhx715.github.io/2024/09/11/node-js%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">http://lhx715.github.io/2024/09/11/node-js%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lhx715.github.io" target="_blank">虾虾的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/node-js/">node.js</a></div><div class="post_share"><div class="social-share" data-image="https://img-1321156231.cos.ap-nanjing.myqcloud.com/sql_ddl.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/09/09/%E9%98%85%E8%AF%BB%E6%B8%85%E5%8D%95/" title="阅读清单"><img class="cover" src="/img/%E7%8C%AB%E7%88%AA.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">阅读清单</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/avater.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lhx</div><div class="author-info__description">本菜鸟的学习历程</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode-js"><span class="toc-number">1.</span> <span class="toc-text">深入浅出node.js</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">基础概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E6%B6%89%E5%8F%8A%E6%A8%A1%E5%BC%8F%EF%BC%88EDA"><span class="toc-number">1.1.1.</span> <span class="toc-text">事件驱动涉及模式（EDA)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IO"><span class="toc-number">1.1.2.</span> <span class="toc-text">IO</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#node%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">node的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#node%E7%89%B9%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">node特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#node%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.4.</span> <span class="toc-text">node的应用场景</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E6%9C%BA%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">模块机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#js%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E7%9A%84%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">js核心模块的编译过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text"> c&#x2F;c++扩展模块</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/11/node-js%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="node.js阅读笔记"><img src="https://img-1321156231.cos.ap-nanjing.myqcloud.com/sql_ddl.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="node.js阅读笔记"/></a><div class="content"><a class="title" href="/2024/09/11/node-js%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="node.js阅读笔记">node.js阅读笔记</a><time datetime="2024-09-10T16:58:42.000Z" title="发表于 2024-09-11 00:58:42">2024-09-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/09/09/%E9%98%85%E8%AF%BB%E6%B8%85%E5%8D%95/" title="阅读清单"><img src="/img/%E7%8C%AB%E7%88%AA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="阅读清单"/></a><div class="content"><a class="title" href="/2024/09/09/%E9%98%85%E8%AF%BB%E6%B8%85%E5%8D%95/" title="阅读清单">阅读清单</a><time datetime="2024-09-08T16:30:00.000Z" title="发表于 2024-09-09 00:30:00">2024-09-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/09/09/csapp%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="csapp阅读笔记"><img src="https://mainpage-1321156231.cos.ap-nanjing.myqcloud.com/sql_dql.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="csapp阅读笔记"/></a><div class="content"><a class="title" href="/2024/09/09/csapp%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="csapp阅读笔记">csapp阅读笔记</a><time datetime="2024-09-08T16:21:23.000Z" title="发表于 2024-09-09 00:21:23">2024-09-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/31/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" title="安卓开发"><img src="/img/%E7%8C%AB%E7%88%AA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="安卓开发"/></a><div class="content"><a class="title" href="/2024/05/31/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" title="安卓开发">安卓开发</a><time datetime="2024-05-31T15:44:13.000Z" title="发表于 2024-05-31 23:44:13">2024-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/25/vue%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" title="vue的设计与实现"><img src="/img/%E7%8C%AB%E7%88%AA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vue的设计与实现"/></a><div class="content"><a class="title" href="/2024/05/25/vue%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" title="vue的设计与实现">vue的设计与实现</a><time datetime="2024-05-25T15:26:46.000Z" title="发表于 2024-05-25 23:26:46">2024-05-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By lhx</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script defer data-pjax src="/js/cat.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
